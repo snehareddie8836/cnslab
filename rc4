@@ -1,0 +1,21 @@
+def rc4(key, data):
+    key = [ord(ch) for ch in key]
+    s = list(range(256))
+    j = 0
+    for i in range(256):
+        j = (j + s[i] + key[i % len(key)]) % 256
+        s[i], s[j] = s[j], s[i]
+    i = j = 0
+    result = []
+    for byte in data:
+        i = (i + 1) % 256
+        j = (j + s[i]) % 256
+        s[i], s[j] = s[j], s[i]
+        result.append(byte ^ s[(s[i] + s[j]) % 256])
+    return bytes(result)
+key = input("Key: ")
+msg = input("Message: ").encode()
+enc = rc4(key, msg)
+print("Encrypted (hex):", enc.hex())
+dec = rc4(key, enc).decode()
+print("Decrypted:",dec)
