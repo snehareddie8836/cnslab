@@ -1,0 +1,11 @@
+from Crypto.Cipher import AES
+from Crypto.Util.Padding import pad, unpad
+import base64
+key = input("Enter 16-char key: ").encode()
+iv = input("Enter 16-char IV: ").encode()
+plaintext = input("Enter plaintext: ").encode()
+cipher = AES.new(key, AES.MODE_CBC, iv)
+ct = cipher.encrypt(pad(plaintext, 16))
+print("Encrypted (Base64):", base64.b64encode(ct).decode())
+dec = unpad(AES.new(key, AES.MODE_CBC, iv).decrypt(ct), 16)
+print("Decrypted:", dec.decode())
