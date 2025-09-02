@@ -1,0 +1,20 @@
+def diffie_hellman(p, g, a, b):
+    A = pow(g, a, p)
+    B = pow(g, b, p)
+    shared_Alice = pow(B, a, p)
+    shared_Bob = pow(A, b, p)
+    return A, B, shared_Alice, shared_Bob
+
+p = 2
+g = 5 
+a = 6   
+b = 15  
+
+A, B, secret_Alice, secret_Bob = diffie_hellman(p, g, a, b)
+
+print("Public Prime (p):", p)
+print("Public prime (g):", g)
+print("Alice's Public Value (A):", A)
+print("Bob's Public Value (B):", B)
+print("Alice's Computed Secret:", secret_Alice)
+print("Bob's Computed Secret:", secret_Bob)
