@@ -1,0 +1,15 @@
+def encrypt(text,k):
+    res=""
+    for x in text:
+        if 65<=ord(x)<90:
+            res += chr((ord(x) - ord('A') + k) % 26 + ord('A'))
+        elif 97<=ord(x)<122:
+            res+=chr((ord(x) - ord('a') + k) % 26 + ord('a'))
+    return res
+def decrypt(text,k):
+    return encrypt(text,-k)
+n=input("Enter string:")
+k=int(input("Enter key:"))
+e=encrypt(n,k)
+print("Encrypted:",e)
+print("Decrypted:",decrypt(e,k))
