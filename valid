@@ -1,0 +1,40 @@
+<html>
+<head><title> User registration form</title></head>
+<style>
+form {
+      border: 1px solid;
+      padding: 20px;
+      width: 300px;
+      margin: 50px auto;
+    }
+</style>
+<body>
+<form method="POST" action="/">
+<h1>USER REGISTRATION FORM</h1>
+<label>Enter Username: </label>
+<input type="text" name="username" required  minlength="3" maxlength="20" pattern="[A-Za-z][A-Za-z0-9_]"
+title="Start with a letter; 3–20 characters (letters, numbers, underscore)">
+<br><br>
+<label>Enter Email: </label>
+<input type="email" name="email" required pattern="[A-Za-z][A-Za-z0-9_]">
+<br><br>
+<label>Enter phone no </label>
+<input type="tel" name="no" placeholder="1234567890"  pattern="\d{10}"
+         title="Enter exactly 10 digits.">
+<br><br>
+<label>Enter password: </label>
+<input type="password" name="pas">
+<br><br>
+<label>DOB: </label>
+<input type="date" name="dob">
+<br><br>
+<label>Gender</label>
+  <select name="gender" required>
+    <option value="" selected disabled>Select gender</option>
+    <option>Male</option>
+    <option>Female</option>
+  </select>
+<button type="submit">Register</button>
+
+</body>
+</html>
