@@ -1,0 +1,17 @@
+import hashlib
+
+def bytes_to_hex(byte_data):
+    return ''.join(f'{b:02X}' for b in byte_data)
+
+# Main
+print("Message digest object info:")
+print("Algorithm = SHA-1")
+print("Provider = hashlib (built-in Python module)")
+
+inputs = ["", "abc", "abcdefghijklmnopqrstuvwxyz"]
+
+for input_str in inputs:
+    sha1 = hashlib.sha1()         # Create SHA-1 object
+    sha1.update(input_str.encode())
+    output = sha1.digest()
+    print(f'\nSHA-1("{input_str}") = {bytes_to_hex(output)}')
