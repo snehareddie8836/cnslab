@@ -1,67 +1,55 @@
+import random
+from math import gcd
 
+# Function to generate e such that 1 < e < phi and gcd(e, phi) = 1
+def generate_e(phi):
+    while True:
+        e = random.randrange(2, phi)
+        if gcd(e, phi) == 1:
+            return e
 
-import java.math.BigInteger;
-import java.util.Scanner;
-import java.util.Random;
-public class RSA {
-    static Scanner sc = new Scanner(System.in);
+# Function to find modular inverse of e under mod phi
+def mod_inverse(e, phi):
+    # Extended Euclidean Algorithm
+    def egcd(a, b):
+        if a == 0:
+            return b, 0, 1
+        g, y, x = egcd(b % a, a)
+        return g, x - (b // a) * y, y
+    g, x, y = egcd(e, phi)
+    if g != 1:
+        raise Exception('No modular inverse')
+    else:
+        return x % phi
 
-    public static void main(String[] args) {
-        try {
-            // Input two prime numbers
-            System.out.print("Enter a prime number (p): ");
-            BigInteger p = sc.nextBigInteger();
+# Main
+p = int(input("Enter a prime number (p): "))
+q = int(input("Enter another prime number (q): "))
 
-            System.out.print("Enter another prime number (q): ");
-            BigInteger q = sc.nextBigInteger();
+# n = p * q
+n = p * q
 
-            // Compute n = p * q
-            BigInteger n = p.multiply(q);
+# phi = (p-1)*(q-1)
+phi = (p - 1) * (q - 1)
 
-            // Compute phi = (p-1)(q-1)
-            BigInteger phi = p.subtract(BigInteger.ONE).multiply(q.subtract(BigInteger.ONE));
+# Generate e and d
+e = generate_e(phi)
+d = mod_inverse(e, phi)
 
-            // Generate public key exponent e
-            BigInteger e = generateE(phi);
+print(f"\nPublic key (e, n): ({e}, {n})")
+print(f"Private key (d, n): ({d}, {n})")
 
-            // Generate private key exponent d (modular inverse of e mod phi)
-            BigInteger d = e.modInverse(phi);
+# Input message
+message = int(input("\nEnter the message to encrypt (as a number): "))
 
-            System.out.println("Public key (e, n): " + e + ", " + n);
-            System.out.println("Private key (d, n): " + d + ", " + n);
+if message >= n:
+    print("Message must be less than n. Please enter a smaller number.")
+    exit()
 
-            sc.nextLine(); // Consume leftover newline
+# Encrypt: c = m^e mod n
+encrypted = pow(message, e, n)
+print("Encrypted message:", encrypted)
 
-            // Input the message to encrypt
-            System.out.print("Enter the message to encrypt (as a number): ");
-            BigInteger message = new BigInteger(sc.nextLine());
-
-            if (message.compareTo(n) >= 0) {
-                System.out.println("Message must be less than n. Please enter a smaller number.");
-                return;
-            }
-
-            // Encrypt: c = m^e mod n
-            BigInteger encrypted = message.modPow(e, n);
-            System.out.println("Encrypted message: " + encrypted);
-
-            // Decrypt: m = c^d mod n
-            BigInteger decrypted = encrypted.modPow(d, n);
-            System.out.println("Decrypted message: " + decrypted);
-        } catch (Exception ex) {
-            System.out.println("Error: " + ex.getMessage());
-        }
-    }
-
-    // Generate e such that 1 < e < phi and gcd(e, phi) = 1
-    public static BigInteger generateE(BigInteger phi) {
-        Random rand = new Random();
-        BigInteger e;
-
-        do {
-            e = new BigInteger(phi.bitLength(), rand);
-            // Ensure 1 < e < phi
-        } while (e.compareTo(BigInteger.ONE) <= 0 || e.compareTo(phi) >= 0 || !phi.gcd(e).equals(BigInteger.ONE));
-        return e;
-    }
-}
+# Decrypt: m = c^d mod n
+decrypted = pow(encrypted, d, n)
+print("Decrypted message:", decrypted)
